@@ -49,7 +49,7 @@ export default function InboxPanel() {
             <input
               ref={inputRef}
               type="text"
-              placeholder="Captura r\u00E1pida..."
+              placeholder="Captura rápida..."
               style={{
                 width: '100%', padding: 12, border: '1px solid var(--border-color)',
                 fontSize: 14, marginBottom: 12

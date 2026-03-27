@@ -28,7 +28,7 @@ export default function ModalBooks({ metaIdx, meta }: { metaIdx: number; meta: M
         <input
           ref={inputRef}
           type="text"
-          placeholder="T\u00EDtulo..."
+          placeholder="Título..."
           onKeyDown={e => { if (e.key === 'Enter') handleAdd(); }}
         />
         <button onClick={handleAdd}>Añadir</button>

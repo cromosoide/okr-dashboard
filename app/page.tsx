@@ -44,7 +44,7 @@ export default function DashboardPage() {
           <textarea
             defaultValue={state.notes}
             onBlur={e => saveNotes(e.target.value)}
-            placeholder="Bit\u00E1cora de mantenimiento (Ej. Compra del boiler: 15 Mar 2026)..."
+            placeholder="Bitácora de mantenimiento (Ej. Compra del boiler: 15 Mar 2026)..."
             style={{
               width: '100%', minHeight: 150, fontSize: '1.1rem',
               border: 'var(--border-thick)', background: 'var(--bg-card)',
