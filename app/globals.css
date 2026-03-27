@@ -211,39 +211,87 @@ h1, h2, h3, h4 {
 /* Mobile Responsive                          */
 /* ========================================== */
 @media (max-width: 767px) {
-  .container { padding: 0 16px; }
+  /* Global overflow control */
+  body { overflow-x: hidden; }
+  .container { padding: 0 12px; max-width: 100vw; overflow-x: hidden; }
 
-  .header { padding: 24px 0; margin-bottom: 24px; }
-  .header-title { font-size: 1.6rem; padding: 6px 12px; box-shadow: 4px 4px 0px var(--rose-main); }
-  .header-sub { font-size: 0.9rem; }
+  /* Header — compact for small screens */
+  .header { padding: 16px 0; margin-bottom: 16px; }
+  .header-title { font-size: 1.4rem; padding: 6px 10px; box-shadow: 3px 3px 0px var(--rose-main); word-break: break-word; }
+  .header-sub { font-size: 0.85rem; margin-top: 10px; }
 
-  .time-widget { min-width: unset; padding: 12px 16px; }
+  /* Time Widget */
+  .time-widget { min-width: unset; width: 100%; padding: 12px 14px; box-shadow: 3px 3px 0px var(--border-color); }
 
-  .section-mt { margin-top: 32px; }
-  .section-title { font-size: 1.4rem; margin-bottom: 20px; }
-  .section-title::before { width: 16px; height: 16px; margin-right: 10px; }
+  /* Sections — tighter spacing */
+  .section-mt { margin-top: 28px; }
+  .section-title { font-size: 1.2rem; margin-bottom: 16px; word-break: break-word; }
+  .section-title::before { width: 14px; height: 14px; margin-right: 8px; flex-shrink: 0; }
 
-  .card { padding: 20px; box-shadow: 4px 4px 0px var(--border-color); }
-  .card:hover { box-shadow: 2px 2px 0px var(--border-color); }
-  .card h3 { font-size: 1.3rem; }
-  .btn-cmd { padding: 12px; font-size: 0.9rem; box-shadow: 3px 3px 0px var(--text-muted); }
+  /* Cards — clean mobile blocks */
+  .card { padding: 16px; box-shadow: 3px 3px 0px var(--border-color); overflow: hidden; border-width: 2px; }
+  .card:hover { box-shadow: 2px 2px 0px var(--border-color); top: 0; left: 0; }
+  .card h3 { font-size: 1.1rem; margin-bottom: 8px; word-break: break-word; }
+  .card .desc { font-size: 0.85rem; margin-bottom: 16px; }
+  .card .sub { font-size: 0.7rem; padding: 3px 8px; margin-bottom: 10px; }
 
+  /* Progress inside cards */
+  .section-label { font-size: 0.75rem; padding: 4px 8px; box-shadow: 2px 2px 0px var(--text-muted); word-break: break-word; }
+  .progress-track { height: 14px; margin-bottom: 16px; border-width: 2px; }
+  .okr-value { font-size: 12px !important; }
+
+  /* Button — full width clean block */
+  .btn-cmd { padding: 12px 8px; font-size: 0.8rem; letter-spacing: 0.5px; box-shadow: 3px 3px 0px var(--text-muted); border-width: 2px; }
+
+  /* Charts — fit in card */
+  .chart-container { padding: 8px; border-width: 2px; box-shadow: 3px 3px 0px var(--border-color); margin-bottom: 20px; }
+  .mini-chart { height: 130px; margin-top: 12px; margin-bottom: 16px; }
+
+  /* Modal — fullscreen on mobile */
   .modal-overlay { padding: 0; }
   .modal-content { max-height: 100vh; height: 100vh; border: none; box-shadow: none; }
-  .modal-header { padding: 16px 20px; }
-  .modal-header h3 { font-size: 1.4rem; }
-  .modal-body { padding: 20px; }
-  .input-group input { padding: 12px; font-size: 1.2rem; }
+  .modal-header { padding: 14px 16px; }
+  .modal-header h3 { font-size: 1.2rem; }
+  .modal-header p { font-size: 0.8rem; }
+  .btn-close { width: 40px; height: 40px; font-size: 1.2rem; }
+  .modal-body { padding: 16px; }
+  .input-group input { padding: 10px; font-size: 1rem; border-width: 2px; }
+  .input-grid { padding: 16px; border-width: 2px; box-shadow: 3px 3px 0px var(--border-color); }
+  .info-box { padding: 16px; font-size: 0.9rem; }
 
-  .fab-btn { width: 56px; height: 56px; font-size: 24px; bottom: 24px; right: 16px; box-shadow: 4px 4px 0px var(--bg-dark); }
+  /* FAB & Inbox */
+  .fab-btn { width: 48px; height: 48px; font-size: 20px; bottom: 16px; right: 12px; box-shadow: 3px 3px 0px var(--bg-dark); border-width: 2px; }
   .inbox-panel { width: 100vw; right: -100vw; border-left: none; box-shadow: none; }
+  .inbox-item { padding: 12px; font-size: 0.85rem; box-shadow: 2px 2px 0px var(--bg-dark); border-width: 2px; }
 
-  .grid { gap: 20px; }
+  /* Grids — single column stacked blocks */
+  .grid { gap: 16px; }
 
-  .mini-chart { height: 140px; }
+  /* OKR items */
+  .okr-item { padding: 10px; gap: 8px; border-width: 2px; }
+  .okr-text { font-size: 0.85rem; }
+  .okr-item input[type="checkbox"] { width: 20px; height: 20px; border-width: 2px; }
+  .btn-delete { padding: 6px 8px; font-size: 0.75rem; }
 
-  .okr-item { padding: 12px; gap: 10px; }
-  .okr-text { font-size: 0.95rem; }
+  /* Add row */
+  .add-okr-row input { padding: 10px; font-size: 0.9rem; border-width: 2px; }
+  .add-okr-row button { padding: 0 16px; font-size: 1.2rem; border-width: 2px; }
 
-  .mt-12 { margin-top: 32px; }
+  /* Notes */
+  .mt-12 { margin-top: 28px; }
+
+  /* Contenteditable — less padding on mobile */
+  [contenteditable="true"] { padding: 4px 6px; }
+
+  /* Reset link */
+  .reset-link { font-size: 0.85rem; }
+
+  /* Heatmap squares — smaller */
+  .heatmap-grid { gap: 3px !important; }
+
+  /* Funnel grid */
+  .funnel-grid { font-size: 0.8rem; }
+
+  /* Buckets */
+  .bucket-card { padding: 12px; }
 }
