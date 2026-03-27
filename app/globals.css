@@ -294,4 +294,75 @@ h1, h2, h3, h4 {
 
   /* Buckets */
   .bucket-card { padding: 12px; }
+
+  /* ================================================ */
+  /* Kill ALL sticky hover effects on touch devices   */
+  /* ================================================ */
+  .okr-item:hover {
+    background: var(--bg-card);
+    color: var(--text-main);
+    transform: none;
+  }
+  .okr-item:hover .btn-delete {
+    border-color: var(--border-color);
+  }
+  .inbox-item:hover {
+    background: var(--bg-light);
+    color: var(--text-main);
+    transform: none;
+    box-shadow: 2px 2px 0px var(--bg-dark);
+  }
+  .btn-cmd:hover,
+  .card-rose .btn-cmd:hover,
+  .card-blue .btn-cmd:hover,
+  .card-emerald .btn-cmd:hover {
+    background: var(--bg-dark);
+    color: var(--text-white);
+    transform: none;
+    box-shadow: 3px 3px 0px var(--text-muted);
+  }
+  .btn-delete:hover {
+    transform: none;
+  }
+  .fab-btn:hover {
+    background: var(--rose-main);
+    color: var(--text-white);
+    transform: none;
+  }
+  .btn-close:hover {
+    transform: none;
+  }
+  .add-okr-row button:hover {
+    background: var(--bg-dark);
+    color: var(--text-white);
+  }
+  .reset-link:hover {
+    background: transparent;
+    color: var(--bg-dark);
+  }
+  [contenteditable="true"]:hover {
+    border-color: transparent;
+    background: transparent;
+  }
+
+  /* ================================================ */
+  /* App-like card blocks — softer shadows on mobile  */
+  /* ================================================ */
+  .card {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-top-width: 6px;
+  }
+  .card:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  .btn-cmd {
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+  .section-label {
+    box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+  }
+  .chart-container {
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  }
+  .progress-track { height: 12px; }
 }
