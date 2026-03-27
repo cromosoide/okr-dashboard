@@ -1,13 +1,15 @@
 'use client';
 
-import { useReducer, useEffect, useCallback } from 'react';
+import { useReducer, useEffect, useCallback, useRef } from 'react';
 import { produce } from 'immer';
 import type { AppState, AppAction } from '@/lib/types';
 import { defaultState } from '@/lib/defaultState';
+import { supabase } from '@/lib/supabase';
 
 const DB_KEY = 'bioMaquinaDataV6';
 
 function reducer(state: AppState, action: AppAction): AppState {
+  if (action.type === 'HYDRATE_FROM_CLOUD') return action.state;
   return produce(state, draft => {
     switch (action.type) {
       case 'UPDATE_TEXT':
@@ -142,9 +144,57 @@ function loadState(): AppState {
 
 export function useDashboard() {
   const [state, dispatch] = useReducer(reducer, undefined, loadState);
+  const isHydrating = useRef(true);
+  const stateRef = useRef(state);
+  stateRef.current = state;
 
+  // Persist to localStorage (instant, synchronous cache)
   useEffect(() => {
     localStorage.setItem(DB_KEY, JSON.stringify(state));
+  }, [state]);
+
+  // Fetch from Supabase on mount — hydrate if cloud has data, then do initial save
+  useEffect(() => {
+    supabase
+      .from('dashboard_state')
+      .select('state')
+      .eq('id', 'singleton')
+      .single()
+      .then(({ data }) => {
+        const hasCloudData = data?.state && typeof data.state === 'object' && 'metas' in (data.state as Record<string, unknown>);
+        if (hasCloudData) {
+          dispatch({ type: 'HYDRATE_FROM_CLOUD', state: data.state as AppState });
+        }
+        // After hydration decision, mark complete and do initial save if cloud was empty
+        setTimeout(() => {
+          isHydrating.current = false;
+          if (!hasCloudData) {
+            supabase
+              .from('dashboard_state')
+              .upsert({ id: 'singleton', state: stateRef.current, updated_at: new Date().toISOString() })
+              .then(({ error }) => {
+                if (error) console.error('Supabase initial sync error:', error);
+              });
+          }
+        }, 100);
+      })
+      .then(undefined, () => {
+        isHydrating.current = false;
+      });
+  }, []);
+
+  // Debounced save to Supabase (cloud persistence)
+  useEffect(() => {
+    if (isHydrating.current) return;
+    const timer = setTimeout(() => {
+      supabase
+        .from('dashboard_state')
+        .upsert({ id: 'singleton', state, updated_at: new Date().toISOString() })
+        .then(({ error }) => {
+          if (error) console.error('Supabase sync error:', error);
+        });
+    }, 1500);
+    return () => clearTimeout(timer);
   }, [state]);
 
   const updateText = useCallback((metaIdx: number, field: 'title' | 'description', value: string) =>
@@ -217,6 +267,9 @@ export function useDashboard() {
     if (window.confirm('\uD83D\uDEA8 WARNING: Se borrar\u00E1 toda tu base de datos y progreso. \u00BFContinuar?')) {
       localStorage.removeItem(DB_KEY);
       dispatch({ type: 'FACTORY_RESET' });
+      supabase
+        .from('dashboard_state')
+        .upsert({ id: 'singleton', state: defaultState, updated_at: new Date().toISOString() });
     }
   }, []);
 

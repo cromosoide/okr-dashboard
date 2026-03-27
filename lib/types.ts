@@ -159,7 +159,8 @@ export type AppAction =
   | { type: 'SAVE_NOTES'; text: string }
   | { type: 'ADD_INBOX_ITEM'; category: InboxItem['category']; text: string }
   | { type: 'DELETE_INBOX_ITEM'; id: number }
-  | { type: 'FACTORY_RESET' };
+  | { type: 'FACTORY_RESET' }
+  | { type: 'HYDRATE_FROM_CLOUD'; state: AppState };
 
 // --- Helpers ---
 
