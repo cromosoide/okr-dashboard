@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDashboardContext } from '@/contexts/DashboardContext';
 import Header from '@/components/Header';
 import PilarSection from '@/components/PilarSection';
@@ -16,6 +16,23 @@ const PILARS = [
 export default function DashboardPage() {
   const { state, saveNotes, factoryReset } = useDashboardContext();
   const [activeModalIdx, setActiveModalIdx] = useState<number | null>(null);
+
+  // Lock body scroll when modal is open (prevents iOS scroll trap)
+  useEffect(() => {
+    if (activeModalIdx !== null) {
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.width = '100%';
+      document.body.style.top = `-${window.scrollY}px`;
+    } else {
+      const scrollY = document.body.style.top;
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+      document.body.style.top = '';
+      window.scrollTo(0, parseInt(scrollY || '0') * -1);
+    }
+  }, [activeModalIdx]);
 
   const metasByPilar = (pilar: 1 | 2 | 3) =>
     state.metas

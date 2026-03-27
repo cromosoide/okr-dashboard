@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useDashboardContext } from '@/contexts/DashboardContext';
 import type { InboxItem } from '@/lib/types';
 
@@ -15,6 +15,16 @@ export default function InboxPanel() {
   const { state, addInboxItem, deleteInboxItem } = useDashboardContext();
   const [isOpen, setIsOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // Lock body scroll when inbox panel is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [isOpen]);
 
   const handleAdd = (category: InboxItem['category']) => {
     const text = inputRef.current?.value.trim();
