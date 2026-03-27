@@ -365,4 +365,37 @@ h1, h2, h3, h4 {
     box-shadow: 0 1px 4px rgba(0,0,0,0.08);
   }
   .progress-track { height: 12px; }
+
+  /* ================================================ */
+  /* iOS touch scroll fixes                           */
+  /* ================================================ */
+  /* Prevent contenteditable from trapping touch scroll */
+  [contenteditable="true"] {
+    -webkit-user-select: none;
+    user-select: none;
+    touch-action: pan-y;
+    cursor: default;
+  }
+  [contenteditable="true"]:focus {
+    -webkit-user-select: text;
+    user-select: text;
+    cursor: text;
+  }
+
+  /* Ensure chart containers don't trap scroll */
+  .chart-container,
+  .mini-chart {
+    touch-action: pan-y;
+    overflow: hidden;
+  }
+
+  /* Cards must allow vertical scroll pass-through */
+  .card {
+    touch-action: pan-y;
+  }
+
+  /* Ensure main page scrolls freely */
+  html, body {
+    -webkit-overflow-scrolling: touch;
+  }
 }
