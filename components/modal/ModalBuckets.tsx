@@ -25,7 +25,7 @@ export default function ModalBuckets({ metaIdx, meta }: { metaIdx: number; meta:
   return (
     <>
       <div className="flex justify-between items-center mb-4">
-        <span className="section-label" style={{ margin: 0 }}>Fondos de Amortizaci\u00F3n (Buckets)</span>
+        <span className="section-label" style={{ margin: 0 }}>Fondos de Amortización (Buckets)</span>
         <span style={{ fontSize: 12, fontWeight: 'bold', background: 'var(--bg-light)', padding: '4px 8px' }}>
           {pct}%
         </span>

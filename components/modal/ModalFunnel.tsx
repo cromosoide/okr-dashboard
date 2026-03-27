@@ -10,7 +10,7 @@ export default function ModalFunnel({ metaIdx, meta }: { metaIdx: number; meta: 
   return (
     <>
       <div className="flex justify-between items-center mb-4">
-        <span className="section-label" style={{ margin: 0 }}>M\u00E9tricas de Embudo y Tareas</span>
+        <span className="section-label" style={{ margin: 0 }}>Métricas de Embudo y Tareas</span>
       </div>
 
       <div style={{
@@ -18,7 +18,7 @@ export default function ModalFunnel({ metaIdx, meta }: { metaIdx: number; meta: 
         background: 'var(--bg-dark)', color: 'var(--text-white)', padding: 10,
         fontWeight: 'bold', textAlign: 'center', marginTop: 15
       }}>
-        <div>Mes</div><div>Inversi\u00F3n $</div><div>Leads</div><div>CPL</div>
+        <div>Mes</div><div>Inversión $</div><div>Leads</div><div>CPL</div>
       </div>
 
       {meta.funnelData.map((data, idx) => {

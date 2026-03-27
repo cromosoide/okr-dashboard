@@ -18,7 +18,7 @@ export default function ModalHealthScore({ metaIdx, meta }: { metaIdx: number; m
   return (
     <>
       <div className="flex justify-between items-center mb-4">
-        <span className="section-label" style={{ margin: 0 }}>Sem\u00E1foro de Retenci\u00F3n</span>
+        <span className="section-label" style={{ margin: 0 }}>Semáforo de Retención</span>
         <span style={{ fontSize: 12, fontWeight: 'bold', background: 'var(--bg-light)', padding: '4px 8px' }}>
           CLIENTES
         </span>

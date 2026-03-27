@@ -10,7 +10,7 @@ export default function ModalHeatmap({ metaIdx, meta }: { metaIdx: number; meta:
   return (
     <>
       <div className="flex justify-between items-center mb-4">
-        <span className="section-label" style={{ margin: 0 }}>Racha de Auditor\u00EDas (52 Semanas)</span>
+        <span className="section-label" style={{ margin: 0 }}>Racha de Auditorías (52 Semanas)</span>
         <span style={{ fontSize: 12, fontWeight: 'bold', background: 'var(--bg-light)', padding: '4px 8px' }}>
           {completed}/52
         </span>

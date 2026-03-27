@@ -26,7 +26,7 @@ export default function ModalOKRList({ metaIdx, okrs, showAddRow = true }: Props
   return (
     <>
       <div className="flex justify-between items-center mb-4">
-        <span className="section-label" style={{ margin: 0 }}>OKRs Estrat\u00E9gicos y Tareas</span>
+        <span className="section-label" style={{ margin: 0 }}>OKRs Estratégicos y Tareas</span>
         <span style={{
           fontSize: 12, fontWeight: 'bold',
           background: doneCount === okrs.length && okrs.length > 0 ? 'var(--emerald-light, var(--bg-light))' : 'var(--bg-light)',

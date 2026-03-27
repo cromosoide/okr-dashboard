@@ -66,7 +66,7 @@ export default function MetaModal({ metaIdx, onClose }: Props) {
 
           {meta.type === 'chart_line' && (
             <>
-              <span className="section-label">M\u00E9tricas de Rendimiento (Real vs Meta)</span>
+              <span className="section-label">Métricas de Rendimiento (Real vs Meta)</span>
               <div className="input-grid grid grid-4">
                 {meta.chartData.labels.map((label, i) => (
                   <div key={i} className="input-group">
