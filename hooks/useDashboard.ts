@@ -155,6 +155,7 @@ export function useDashboard() {
 
   // Fetch from Supabase on mount — hydrate if cloud has data, then do initial save
   useEffect(() => {
+    if (!supabase) { isHydrating.current = false; return; }
     supabase
       .from('dashboard_state')
       .select('state')
@@ -185,7 +186,7 @@ export function useDashboard() {
 
   // Debounced save to Supabase (cloud persistence)
   useEffect(() => {
-    if (isHydrating.current) return;
+    if (isHydrating.current || !supabase) return;
     const timer = setTimeout(() => {
       supabase
         .from('dashboard_state')
