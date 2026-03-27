@@ -37,8 +37,8 @@ export default function Header() {
 
   return (
     <header className="header">
-      <div className="container flex flex-col" style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: 24 }}>
-        <div style={{ flex: 1, minWidth: 0 }}>
+      <div className="container header-layout">
+        <div className="header-text">
           <h1 className="header-title">TABLERO MAESTRO: LA BIO-MÁQUINA 2026</h1>
           <p className="header-sub">
             Abre cada tarjeta para gestionar OKRs. El progreso se calculará automáticamente (Roll-up).
