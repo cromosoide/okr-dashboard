@@ -5,10 +5,10 @@ import { useDashboardContext } from '@/contexts/DashboardContext';
 import type { InboxItem } from '@/lib/types';
 
 const CATEGORIES = [
-  { key: 'idea' as const, label: '\uD83D\uDCA1 Mis Ideas', color: '#3b82f6' },
-  { key: 'diseno' as const, label: '\uD83C\uDFA8 Dise\u00F1o/MKT', color: '#e11d48' },
+  { key: 'idea' as const, label: '\uD83D\uDCA1 Ideas', color: '#3b82f6' },
+  { key: 'diseno' as const, label: '\uD83C\uDFA8 Dise\u00F1o', color: '#e11d48' },
   { key: 'ia' as const, label: '\uD83E\uDD16 IA', color: '#8b5cf6' },
-  { key: 'purgatorio' as const, label: '\u2753 Purgatorio', color: '#64748b' },
+  { key: 'purgatorio' as const, label: '\u2753 Otros', color: '#6B7280' },
 ];
 
 export default function InboxPanel() {
@@ -16,7 +16,6 @@ export default function InboxPanel() {
   const [isOpen, setIsOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Lock body scroll when inbox panel is open
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -41,35 +40,34 @@ export default function InboxPanel() {
       <button className="fab-btn" onClick={() => setIsOpen(!isOpen)}>📥</button>
 
       <aside className={`inbox-panel ${isOpen ? 'active' : ''}`}>
-        <div className="modal-header" style={{ background: 'var(--bg-dark)', color: 'white', borderBottom: 'none' }}>
+        <div className="modal-header" style={{ background: 'var(--bg-card)', borderBottom: '1px solid var(--border-color)' }}>
           <div>
-            <h3 style={{ color: 'white', fontSize: 20 }}>Matriz de Cuarentena</h3>
+            <h3 style={{ fontSize: 16, fontWeight: 600 }}>Captura Rápida</h3>
           </div>
           <button
             className="btn-close"
             onClick={() => setIsOpen(false)}
-            style={{ background: 'transparent', borderColor: 'rgba(255,255,255,0.2)', color: 'white' }}
           >
             ✕
           </button>
         </div>
 
-        <div style={{ padding: 24, flexGrow: 1, overflowY: 'auto', background: 'var(--bg-body)' }}>
-          <div style={{ marginBottom: 24 }}>
+        <div style={{ padding: 16, flexGrow: 1, overflowY: 'auto', WebkitOverflowScrolling: 'touch', background: 'var(--bg-body)' }}>
+          <div style={{ marginBottom: 20 }}>
             <input
               ref={inputRef}
               type="text"
-              placeholder="Captura rápida..."
+              placeholder="Escribe una idea..."
               style={{
-                width: '100%', padding: 12, border: '1px solid var(--border-color)',
-                fontSize: 14, marginBottom: 12
+                width: '100%', padding: 10, border: '1px solid var(--border-color)',
+                borderRadius: 8, fontSize: 14, marginBottom: 10, background: 'var(--bg-card)'
               }}
             />
             <div className="grid grid-2" style={{ gap: 8 }}>
               {CATEGORIES.map(cat => (
                 <button
                   key={cat.key}
-                  className="btn-cmd"
+                  className="btn-inbox"
                   style={{ background: cat.color }}
                   onClick={() => handleAdd(cat.key)}
                 >
@@ -79,14 +77,14 @@ export default function InboxPanel() {
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
             {CATEGORIES.map(cat => (
               <div key={cat.key} style={{
-                background: 'var(--bg-card)', padding: 16,
-                border: '1px solid var(--border-color)'
+                background: 'var(--bg-card)', padding: 12,
+                border: '1px solid var(--border-color)', borderRadius: 8
               }}>
                 <h4 style={{
-                  fontSize: 13, color: cat.color, marginBottom: 12,
+                  fontSize: 11, color: cat.color, marginBottom: 8, fontWeight: 600,
                   borderBottom: '1px solid var(--border-color)', paddingBottom: 4
                 }}>
                   {cat.label}
@@ -97,7 +95,7 @@ export default function InboxPanel() {
                       <span>{item.text}</span>
                       <button
                         className="btn-delete"
-                        style={{ padding: '2px 8px', fontSize: 12 }}
+                        style={{ padding: '2px 6px', fontSize: 11 }}
                         onClick={() => deleteInboxItem(item.id)}
                       >
                         ✕

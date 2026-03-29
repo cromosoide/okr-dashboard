@@ -52,7 +52,7 @@ export default function MetaModal({ metaIdx, onClose }: Props) {
 
   return (
     <div className="modal-overlay" onClick={handleOverlayClick}>
-      <div className="modal-content" style={{ borderTop: `8px solid var(--${color}-main)` }}>
+      <div className="modal-content" style={{ borderTop: `3px solid var(--${color}-main)` }}>
         <div className="modal-header">
           <div>
             <h3>{meta.title}</h3>

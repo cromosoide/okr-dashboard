@@ -8,16 +8,27 @@ import MetaModal from '@/components/MetaModal';
 import InboxPanel from '@/components/InboxPanel';
 
 const PILARS = [
-  { pilar: 1 as const, title: '\uD83D\uDFE5 PILAR 1: FUNDAMENTO (La Base)', colorClass: 'title-rose', gridClass: 'grid grid-1 md-grid-2 lg-grid-3' },
-  { pilar: 2 as const, title: '\uD83D\uDFE6 PILAR 2: CRECIMIENTO (Academia y Hogar)', colorClass: 'title-blue', gridClass: 'grid grid-1 md-grid-2 lg-grid-4' },
-  { pilar: 3 as const, title: '\uD83D\uDFE9 PILAR 3: COSECHA (Expansi\u00F3n)', colorClass: 'title-emerald', gridClass: 'grid grid-1 lg-grid-3' },
+  { pilar: 1 as const, title: 'Fundamento', colorClass: 'title-rose', gridClass: 'grid grid-1 md-grid-2 lg-grid-3' },
+  { pilar: 2 as const, title: 'Crecimiento', colorClass: 'title-blue', gridClass: 'grid grid-1 md-grid-2 lg-grid-4' },
+  { pilar: 3 as const, title: 'Cosecha', colorClass: 'title-emerald', gridClass: 'grid grid-1 lg-grid-3' },
 ];
+
+const PILAR_COLORS = { 1: 'rose', 2: 'blue', 3: 'emerald' } as const;
 
 export default function DashboardPage() {
   const { state, saveNotes, factoryReset } = useDashboardContext();
   const [activeModalIdx, setActiveModalIdx] = useState<number | null>(null);
+  const [activePilar, setActivePilar] = useState<1 | 2 | 3>(1);
+  const [isMobile, setIsMobile] = useState(false);
 
-  // Lock body scroll when modal is open (prevents iOS scroll trap)
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
+
+  // Lock body scroll when modal is open
   useEffect(() => {
     if (activeModalIdx !== null) {
       document.body.style.overflow = 'hidden';
@@ -39,12 +50,26 @@ export default function DashboardPage() {
       .map((meta, idx) => ({ meta, idx }))
       .filter(({ meta }) => meta.pilar === pilar);
 
+  const visiblePilars = PILARS.filter(p => isMobile ? p.pilar === activePilar : true);
+
   return (
     <>
       <Header />
 
-      <main className="container section-mt">
+      <nav className="pilar-tabs container">
         {PILARS.map(p => (
+          <button
+            key={p.pilar}
+            className={`pilar-tab ${activePilar === p.pilar ? `active active-${PILAR_COLORS[p.pilar]}` : ''}`}
+            onClick={() => setActivePilar(p.pilar)}
+          >
+            {p.title}
+          </button>
+        ))}
+      </nav>
+
+      <main className="container">
+        {visiblePilars.map(p => (
           <PilarSection
             key={p.pilar}
             pilar={p.pilar}
@@ -57,23 +82,23 @@ export default function DashboardPage() {
         ))}
 
         <section className="section-mt">
-          <h2 className="section-title">📝 NOTAS Y FECHAS</h2>
+          <h2 className="section-title">Notas</h2>
           <textarea
             defaultValue={state.notes}
             onBlur={e => saveNotes(e.target.value)}
-            placeholder="Bitácora de mantenimiento (Ej. Compra del boiler: 15 Mar 2026)..."
+            placeholder="Bitácora de mantenimiento..."
             style={{
-              width: '100%', minHeight: 150, fontSize: '1.1rem',
-              border: 'var(--border-thick)', background: 'var(--bg-card)',
-              color: 'var(--text-main)', padding: 16, outline: 'none',
-              boxShadow: 'var(--shadow-flat)', resize: 'vertical', fontFamily: 'inherit'
+              width: '100%', minHeight: 120, fontSize: '0.9rem',
+              border: '1px solid var(--border-color)', background: 'var(--bg-light)',
+              color: 'var(--text-main)', padding: 12, outline: 'none',
+              borderRadius: 8, resize: 'vertical', fontFamily: 'inherit'
             }}
           />
         </section>
 
-        <div className="text-center mt-12" style={{ borderTop: '1px solid var(--border-color)', paddingTop: 32 }}>
+        <div className="text-center mt-12" style={{ borderTop: '1px solid var(--border-color)', paddingTop: 24 }}>
           <a className="reset-link" onClick={factoryReset}>
-            Hard Reset (Borrar Base de Datos Local)
+            Reset (Borrar Base de Datos)
           </a>
         </div>
       </main>

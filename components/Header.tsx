@@ -16,14 +16,13 @@ function getTimeData() {
   const pct = Math.min(100, Math.round((elapsedMs / totalMs) * 100));
 
   const dateStr = now.toLocaleDateString('es-MX', {
-    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+    weekday: 'short', month: 'short', day: 'numeric'
   });
 
   return {
     dateStr,
-    qBadge: `Q${quarter} ${year}`,
+    qBadge: `Q${quarter} ${year} · ${pct}%`,
     pct,
-    pctText: `${pct}% completado`,
   };
 }
 
@@ -36,28 +35,25 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="header">
-      <div className="container header-layout">
-        <div className="header-text">
-          <h1 className="header-title">TABLERO MAESTRO: LA BIO-MÁQUINA 2026</h1>
-          <p className="header-sub">
-            Abre cada tarjeta para gestionar OKRs. El progreso se calculará automáticamente (Roll-up).
-          </p>
-        </div>
-
-        <div className="time-widget">
-          <div className="flex justify-between items-center" style={{ marginBottom: 8 }}>
-            <span style={{ fontSize: 14, fontWeight: 600, color: '#cbd5e1' }}>{time.dateStr}</span>
-            <span className="badge">{time.qBadge}</span>
-          </div>
-          <div className="progress-bar-bg">
-            <div className="progress-bar-fill" style={{ width: `${time.pct}%` }} />
-          </div>
-          <div style={{ textAlign: 'right' }}>
-            <span style={{ fontSize: 12, fontWeight: 700, color: '#818cf8' }}>{time.pctText}</span>
-          </div>
-        </div>
+    <>
+      <div className="progress-bar-bg">
+        <div className="progress-bar-fill" style={{ width: `${time.pct}%` }} />
       </div>
-    </header>
+
+      <header className="header">
+        <div className="container header-layout">
+          <div className="header-text">
+            <h1 className="header-title">La Bio-Máquina 2026</h1>
+            <p className="header-sub">
+              Abre cada tarjeta para gestionar OKRs. El progreso se calculará automáticamente.
+            </p>
+          </div>
+          <div className="time-widget">
+            <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>{time.dateStr}</span>
+            <span className="badge" style={{ marginLeft: 8 }}>{time.qBadge}</span>
+          </div>
+        </div>
+      </header>
+    </>
   );
 }

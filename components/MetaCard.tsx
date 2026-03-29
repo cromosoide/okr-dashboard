@@ -71,12 +71,13 @@ function MetaCardInner({ meta, metaIdx, onOpenModal }: Props) {
   };
 
   return (
-    <div className={`card card-${color} ${colSpanClass}`}>
+    <div className={`card card-${color} ${colSpanClass}`} onClick={() => onOpenModal(metaIdx)} role="button" tabIndex={0}>
       <div>
         <h3>
           <span
             contentEditable
             suppressContentEditableWarning
+            onClick={e => e.stopPropagation()}
             onBlur={e => updateText(metaIdx, 'title', e.currentTarget.innerText)}
             dangerouslySetInnerHTML={{ __html: meta.title }}
           />
@@ -86,6 +87,7 @@ function MetaCardInner({ meta, metaIdx, onOpenModal }: Props) {
         className="desc"
         contentEditable
         suppressContentEditableWarning
+        onClick={e => e.stopPropagation()}
         onBlur={e => updateText(metaIdx, 'description', e.currentTarget.innerText)}
         dangerouslySetInnerHTML={{ __html: meta.description }}
       />
