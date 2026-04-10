@@ -35,7 +35,7 @@ export function getMetaProgress(meta: Meta): number {
 
     case 'heatmap': {
       if (!meta.weeks.length) return 0;
-      const done = meta.weeks.filter(Boolean).length;
+      const done = meta.weeks.filter(w => w !== null).length;
       return Math.round((done / 52) * 100);
     }
 

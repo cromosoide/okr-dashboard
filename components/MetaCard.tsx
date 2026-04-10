@@ -27,12 +27,19 @@ function MetaCardInner({ meta, metaIdx, onOpenModal }: Props) {
     switch (meta.type) {
       case 'chart_line':
         return null;
-      case 'books_list':
-        label = `Libros le\u00EDdos: ${meta.books.length} de ${meta.target}`;
+      case 'books_list': {
+        const expected = Math.ceil(((new Date().getMonth() + 1) / 12) * meta.target);
+        const diff = meta.books.length - expected;
+        const pace = diff >= 0 ? `${diff} adelante` : `${Math.abs(diff)} atrás`;
+        label = `${meta.books.length}/${meta.target} libros · ${pace}`;
         break;
+      }
       case 'finance_sum': {
         const total = meta.monthlyFlow.reduce((a, b) => a + b, 0);
-        label = `Fondo: $${total.toLocaleString()} / $${meta.target.toLocaleString()}`;
+        const expectedTotal = Math.round(((new Date().getMonth() + 1) / 12) * meta.target);
+        const diff = total - expectedTotal;
+        const pace = diff >= 0 ? `+$${diff.toLocaleString()}` : `-$${Math.abs(diff).toLocaleString()}`;
+        label = `$${total.toLocaleString()} / $${meta.target.toLocaleString()} · ${pace}`;
         break;
       }
       case 'buckets': {
@@ -51,6 +58,11 @@ function MetaCardInner({ meta, metaIdx, onOpenModal }: Props) {
         const totalLeads = meta.funnelData.reduce((a, b) => a + b.leads, 0);
         const cpl = totalLeads > 0 ? (totalSpend / totalLeads).toFixed(2) : '0.00';
         label = `CPL PROMEDIO: $${cpl}`;
+        break;
+      }
+      case 'heatmap': {
+        const reviewed = meta.weeks.filter(w => w !== null).length;
+        label = `${reviewed}/52 semanas revisadas`;
         break;
       }
       default:

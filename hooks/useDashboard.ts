@@ -56,7 +56,7 @@ function reducer(state: AppState, action: AppAction): AppState {
 
       case 'ADD_BUCKET': {
         const m = draft.metas[action.metaIdx];
-        if (m.type === 'buckets') m.buckets.push({ id: Date.now(), name: action.name, target: action.target, saved: 0 });
+        if (m.type === 'buckets') m.buckets.push({ id: Date.now(), name: action.name, target: action.target, saved: 0, category: action.category });
         break;
       }
       case 'UPDATE_BUCKET': {
@@ -104,7 +104,28 @@ function reducer(state: AppState, action: AppAction): AppState {
 
       case 'TOGGLE_WEEK': {
         const m = draft.metas[action.metaIdx];
-        if (m.type === 'heatmap') m.weeks[action.weekIdx] = !m.weeks[action.weekIdx];
+        if (m.type === 'heatmap') {
+          if (m.weeks[action.weekIdx]) {
+            m.weeks[action.weekIdx] = null;
+          } else {
+            m.weeks[action.weekIdx] = { rating: 3, note: '' };
+          }
+        }
+        break;
+      }
+      case 'RATE_WEEK': {
+        const m = draft.metas[action.metaIdx];
+        if (m.type === 'heatmap') {
+          const existing = m.weeks[action.weekIdx];
+          m.weeks[action.weekIdx] = { rating: action.rating, note: existing?.note ?? '' };
+        }
+        break;
+      }
+      case 'NOTE_WEEK': {
+        const m = draft.metas[action.metaIdx];
+        if (m.type === 'heatmap' && m.weeks[action.weekIdx]) {
+          m.weeks[action.weekIdx]!.note = action.note;
+        }
         break;
       }
 
@@ -132,11 +153,23 @@ function reducer(state: AppState, action: AppAction): AppState {
   });
 }
 
+function migrateState(state: AppState): AppState {
+  for (const meta of state.metas) {
+    if (meta.type === 'heatmap' && meta.weeks.length > 0 && typeof meta.weeks[0] === 'boolean') {
+      (meta as { weeks: unknown }).weeks = (meta.weeks as unknown as boolean[]).map(v =>
+        v ? { rating: 3, note: '' } : null
+      );
+    }
+  }
+  return state;
+}
+
 function loadState(): AppState {
   if (typeof window === 'undefined') return JSON.parse(JSON.stringify(defaultState));
   try {
     const saved = localStorage.getItem(DB_KEY);
-    return saved ? JSON.parse(saved) : JSON.parse(JSON.stringify(defaultState));
+    const state = saved ? JSON.parse(saved) : JSON.parse(JSON.stringify(defaultState));
+    return migrateState(state);
   } catch {
     return JSON.parse(JSON.stringify(defaultState));
   }
@@ -222,8 +255,8 @@ export function useDashboard() {
   const updateFinanceFlow = useCallback((metaIdx: number, monthIdx: number, value: number) =>
     dispatch({ type: 'UPDATE_FINANCE_FLOW', metaIdx, monthIdx, value }), []);
 
-  const addBucket = useCallback((metaIdx: number, name: string, target: number) =>
-    dispatch({ type: 'ADD_BUCKET', metaIdx, name, target }), []);
+  const addBucket = useCallback((metaIdx: number, name: string, target: number, category?: 'quick' | 'big') =>
+    dispatch({ type: 'ADD_BUCKET', metaIdx, name, target, category }), []);
 
   const updateBucket = useCallback((metaIdx: number, bucketIdx: number, saved: number) =>
     dispatch({ type: 'UPDATE_BUCKET', metaIdx, bucketIdx, saved }), []);
@@ -251,6 +284,12 @@ export function useDashboard() {
 
   const toggleWeek = useCallback((metaIdx: number, weekIdx: number) =>
     dispatch({ type: 'TOGGLE_WEEK', metaIdx, weekIdx }), []);
+
+  const rateWeek = useCallback((metaIdx: number, weekIdx: number, rating: number) =>
+    dispatch({ type: 'RATE_WEEK', metaIdx, weekIdx, rating }), []);
+
+  const noteWeek = useCallback((metaIdx: number, weekIdx: number, note: string) =>
+    dispatch({ type: 'NOTE_WEEK', metaIdx, weekIdx, note }), []);
 
   const updateChartData = useCallback((metaIdx: number, pointIdx: number, value: number | null) =>
     dispatch({ type: 'UPDATE_CHART_DATA', metaIdx, pointIdx, value }), []);
@@ -280,7 +319,7 @@ export function useDashboard() {
     addBook, deleteBook, updateFinanceFlow,
     addBucket, updateBucket, updateBucketTarget, updateBucketName, deleteBucket,
     addClient, updateClientStatus, updateClientName,
-    updateFunnel, toggleWeek, updateChartData,
+    updateFunnel, toggleWeek, rateWeek, noteWeek, updateChartData,
     saveNotes, addInboxItem, deleteInboxItem, factoryReset,
   };
 }

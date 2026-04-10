@@ -41,7 +41,7 @@ export default function DashboardPage() {
       document.body.style.position = '';
       document.body.style.width = '';
       document.body.style.top = '';
-      window.scrollTo(0, parseInt(scrollY || '0') * -1);
+      window.scrollTo(0, Math.abs(parseInt(scrollY || '0', 10)));
     }
   }, [activeModalIdx]);
 

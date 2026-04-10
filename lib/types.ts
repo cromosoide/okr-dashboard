@@ -62,6 +62,7 @@ export interface Bucket {
   name: string;
   target: number;
   saved: number;
+  category?: 'quick' | 'big';
 }
 
 export interface MetaBuckets {
@@ -103,13 +104,18 @@ export interface MetaFunnel {
   okrs: OKR[];
 }
 
+export interface WeekEntry {
+  rating: number;
+  note: string;
+}
+
 export interface MetaHeatmap {
   id: number;
   pilar: 1 | 2 | 3;
   title: string;
   description: string;
   type: 'heatmap';
-  weeks: boolean[];
+  weeks: (WeekEntry | null)[];
 }
 
 export type Meta =
@@ -145,7 +151,7 @@ export type AppAction =
   | { type: 'ADD_BOOK'; metaIdx: number; title: string }
   | { type: 'DELETE_BOOK'; metaIdx: number; bookIdx: number }
   | { type: 'UPDATE_FINANCE_FLOW'; metaIdx: number; monthIdx: number; value: number }
-  | { type: 'ADD_BUCKET'; metaIdx: number; name: string; target: number }
+  | { type: 'ADD_BUCKET'; metaIdx: number; name: string; target: number; category?: 'quick' | 'big' }
   | { type: 'UPDATE_BUCKET'; metaIdx: number; bucketIdx: number; saved: number }
   | { type: 'UPDATE_BUCKET_TARGET'; metaIdx: number; bucketIdx: number; target: number }
   | { type: 'UPDATE_BUCKET_NAME'; metaIdx: number; bucketIdx: number; name: string }
@@ -155,6 +161,8 @@ export type AppAction =
   | { type: 'UPDATE_CLIENT_NAME'; metaIdx: number; clientIdx: number; name: string }
   | { type: 'UPDATE_FUNNEL'; metaIdx: number; rowIdx: number; field: 'spend' | 'leads'; value: number }
   | { type: 'TOGGLE_WEEK'; metaIdx: number; weekIdx: number }
+  | { type: 'RATE_WEEK'; metaIdx: number; weekIdx: number; rating: number }
+  | { type: 'NOTE_WEEK'; metaIdx: number; weekIdx: number; note: string }
   | { type: 'UPDATE_CHART_DATA'; metaIdx: number; pointIdx: number; value: number | null }
   | { type: 'SAVE_NOTES'; text: string }
   | { type: 'ADD_INBOX_ITEM'; category: InboxItem['category']; text: string }

@@ -87,9 +87,10 @@ export const defaultState: AppState = {
       description: "Reparar y mejorar nuestro hogar para que sea un refugio funcional y bonito.",
       type: "buckets",
       buckets: [
-        { id: 1, name: "Fondo de Guerra (Urgencias)", target: 10000, saved: 0 },
-        { id: 2, name: "Dentista/Mascotas", target: 5000, saved: 0 },
-        { id: 3, name: "Mantenimiento Techo/Muebles", target: 8000, saved: 0 }
+        { id: 1, name: "Fondo de Guerra (Urgencias)", target: 10000, saved: 0, category: "big" as const },
+        { id: 2, name: "Mantenimiento Techo", target: 8000, saved: 0, category: "big" as const },
+        { id: 3, name: "Dentista/Mascotas", target: 5000, saved: 0, category: "quick" as const },
+        { id: 4, name: "Muebles/Decoraci\u00F3n", target: 5000, saved: 0, category: "quick" as const }
       ]
     },
     {
@@ -145,7 +146,7 @@ export const defaultState: AppState = {
       title: "\u2699\uFE0F Sistema Operativo",
       description: "Consolidar el ecosistema digital de seguimiento para que sea a prueba de fallas.",
       type: "heatmap",
-      weeks: Array(52).fill(false)
+      weeks: Array(52).fill(null)
     }
   ],
   inbox: [],
