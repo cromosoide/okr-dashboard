@@ -157,8 +157,7 @@ export function useDashboard() {
   useEffect(() => {
     if (!supabase) { isHydrating.current = false; return; }
     supabase
-      .schema('okr')
-      .from('dashboard_state')
+      .from('okr_dashboard_state')
       .select('state')
       .eq('id', 'singleton')
       .single()
@@ -172,8 +171,7 @@ export function useDashboard() {
           isHydrating.current = false;
           if (!hasCloudData) {
             supabase
-              .schema('okr')
-              .from('dashboard_state')
+              .from('okr_dashboard_state')
               .upsert({ id: 'singleton', state: stateRef.current, updated_at: new Date().toISOString() })
               .then(({ error }) => {
                 if (error) console.error('Supabase initial sync error:', error);
@@ -191,8 +189,7 @@ export function useDashboard() {
     if (isHydrating.current || !supabase) return;
     const timer = setTimeout(() => {
       supabase
-        .schema('okr')
-        .from('dashboard_state')
+        .from('okr_dashboard_state')
         .upsert({ id: 'singleton', state, updated_at: new Date().toISOString() })
         .then(({ error }) => {
           if (error) console.error('Supabase sync error:', error);
@@ -272,8 +269,7 @@ export function useDashboard() {
       localStorage.removeItem(DB_KEY);
       dispatch({ type: 'FACTORY_RESET' });
       supabase
-        .schema('okr')
-        .from('dashboard_state')
+        .from('okr_dashboard_state')
         .upsert({ id: 'singleton', state: defaultState, updated_at: new Date().toISOString() });
     }
   }, []);
