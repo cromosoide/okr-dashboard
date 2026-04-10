@@ -135,10 +135,18 @@ export interface InboxItem {
   category: 'idea' | 'diseno' | 'ia' | 'purgatorio';
 }
 
+export interface Achievement {
+  id: number;
+  text: string;
+  date: string;
+  quarter: number;
+}
+
 export interface AppState {
   metas: Meta[];
   inbox: InboxItem[];
   notes: string;
+  achievements?: Achievement[];
 }
 
 // --- Reducer actions ---
@@ -169,6 +177,8 @@ export type AppAction =
   | { type: 'SAVE_NOTES'; text: string }
   | { type: 'ADD_INBOX_ITEM'; category: InboxItem['category']; text: string }
   | { type: 'DELETE_INBOX_ITEM'; id: number }
+  | { type: 'ADD_ACHIEVEMENT'; text: string }
+  | { type: 'DELETE_ACHIEVEMENT'; id: number }
   | { type: 'FACTORY_RESET' }
   | { type: 'HYDRATE_FROM_CLOUD'; state: AppState };
 

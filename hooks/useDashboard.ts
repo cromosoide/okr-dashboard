@@ -152,6 +152,24 @@ function reducer(state: AppState, action: AppAction): AppState {
         draft.inbox = draft.inbox.filter(item => item.id !== action.id);
         break;
 
+      case 'ADD_ACHIEVEMENT': {
+        if (!draft.achievements) draft.achievements = [];
+        const now = new Date();
+        const quarter = Math.floor(now.getMonth() / 3) + 1;
+        draft.achievements.push({
+          id: Date.now(),
+          text: action.text,
+          date: now.toISOString().split('T')[0],
+          quarter,
+        });
+        break;
+      }
+      case 'DELETE_ACHIEVEMENT':
+        if (draft.achievements) {
+          draft.achievements = draft.achievements.filter(a => a.id !== action.id);
+        }
+        break;
+
       case 'FACTORY_RESET':
         return JSON.parse(JSON.stringify(defaultState));
     }
@@ -318,6 +336,12 @@ export function useDashboard() {
   const deleteInboxItem = useCallback((id: number) =>
     dispatch({ type: 'DELETE_INBOX_ITEM', id }), []);
 
+  const addAchievement = useCallback((text: string) =>
+    dispatch({ type: 'ADD_ACHIEVEMENT', text }), []);
+
+  const deleteAchievement = useCallback((id: number) =>
+    dispatch({ type: 'DELETE_ACHIEVEMENT', id }), []);
+
   const factoryReset = useCallback(() => {
     if (window.confirm('\uD83D\uDEA8 WARNING: Se borrar\u00E1 toda tu base de datos y progreso. \u00BFContinuar?')) {
       localStorage.removeItem(DB_KEY);
@@ -335,6 +359,7 @@ export function useDashboard() {
     addBucket, updateBucket, updateBucketTarget, updateBucketName, deleteBucket, toggleBucketDone,
     addClient, updateClientStatus, updateClientName,
     updateFunnel, toggleWeek, rateWeek, noteWeek, updateChartData,
-    saveNotes, addInboxItem, deleteInboxItem, factoryReset,
+    saveNotes, addInboxItem, deleteInboxItem,
+    addAchievement, deleteAchievement, factoryReset,
   };
 }
