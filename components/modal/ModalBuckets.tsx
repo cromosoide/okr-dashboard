@@ -113,7 +113,7 @@ export default function ModalBuckets({ metaIdx, meta }: { metaIdx: number; meta:
     );
   };
 
-  const renderSection = (title: string, emoji: string, buckets: (typeof meta.buckets[0] & { originalIdx: number })[], category?: 'quick' | 'big') => (
+  const renderSection = (title: string, emoji: string, buckets: (typeof meta.buckets[0] & { originalIdx: number })[]) => (
     <div style={{ marginBottom: 20 }}>
       <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-muted)', marginBottom: 10, display: 'flex', alignItems: 'center', gap: 6 }}>
         <span>{emoji}</span> {title}
@@ -138,8 +138,8 @@ export default function ModalBuckets({ metaIdx, meta }: { metaIdx: number; meta:
 
       {hasCategories ? (
         <>
-          {quickBuckets.length > 0 && renderSection('Quick Fixes', '📌', quickBuckets, 'quick')}
-          {bigBuckets.length > 0 && renderSection('Big Projects', '🏗️', bigBuckets, 'big')}
+          {quickBuckets.length > 0 && renderSection('Quick Fixes', '📌', quickBuckets)}
+          {bigBuckets.length > 0 && renderSection('Big Projects', '🏗️', bigBuckets)}
           {uncategorized.length > 0 && renderSection('Otros', '📦', uncategorized)}
         </>
       ) : (
