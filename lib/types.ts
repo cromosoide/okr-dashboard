@@ -63,6 +63,7 @@ export interface Bucket {
   target: number;
   saved: number;
   category?: 'quick' | 'big';
+  done?: boolean;
 }
 
 export interface MetaBuckets {
@@ -156,6 +157,7 @@ export type AppAction =
   | { type: 'UPDATE_BUCKET_TARGET'; metaIdx: number; bucketIdx: number; target: number }
   | { type: 'UPDATE_BUCKET_NAME'; metaIdx: number; bucketIdx: number; name: string }
   | { type: 'DELETE_BUCKET'; metaIdx: number; bucketIdx: number }
+  | { type: 'TOGGLE_BUCKET_DONE'; metaIdx: number; bucketIdx: number; done: boolean }
   | { type: 'ADD_CLIENT'; metaIdx: number; name: string }
   | { type: 'UPDATE_CLIENT_STATUS'; metaIdx: number; clientIdx: number; status: 'green' | 'yellow' | 'red' }
   | { type: 'UPDATE_CLIENT_NAME'; metaIdx: number; clientIdx: number; name: string }

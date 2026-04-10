@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useDashboardContext } from '@/contexts/DashboardContext';
 import Header from '@/components/Header';
 import PilarSection from '@/components/PilarSection';
@@ -29,19 +29,20 @@ export default function DashboardPage() {
   }, []);
 
   // Lock body scroll when modal is open
+  const scrollYRef = useRef(0);
   useEffect(() => {
     if (activeModalIdx !== null) {
+      scrollYRef.current = window.scrollY;
       document.body.style.overflow = 'hidden';
       document.body.style.position = 'fixed';
       document.body.style.width = '100%';
-      document.body.style.top = `-${window.scrollY}px`;
+      document.body.style.top = `-${scrollYRef.current}px`;
     } else {
-      const scrollY = document.body.style.top;
       document.body.style.overflow = '';
       document.body.style.position = '';
       document.body.style.width = '';
       document.body.style.top = '';
-      window.scrollTo(0, Math.abs(parseInt(scrollY || '0', 10)));
+      window.scrollTo(0, scrollYRef.current);
     }
   }, [activeModalIdx]);
 

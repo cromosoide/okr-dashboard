@@ -79,6 +79,11 @@ function reducer(state: AppState, action: AppAction): AppState {
         if (m.type === 'buckets') m.buckets.splice(action.bucketIdx, 1);
         break;
       }
+      case 'TOGGLE_BUCKET_DONE': {
+        const m = draft.metas[action.metaIdx];
+        if (m.type === 'buckets') m.buckets[action.bucketIdx].done = action.done;
+        break;
+      }
 
       case 'ADD_CLIENT': {
         const m = draft.metas[action.metaIdx];
@@ -159,6 +164,13 @@ function migrateState(state: AppState): AppState {
       (meta as { weeks: unknown }).weeks = (meta.weeks as unknown as boolean[]).map(v =>
         v ? { rating: 3, note: '' } : null
       );
+    }
+    if (meta.type === 'buckets') {
+      for (const bucket of meta.buckets) {
+        if (bucket.done === undefined && bucket.saved >= bucket.target && bucket.target > 0) {
+          bucket.done = true;
+        }
+      }
     }
   }
   return state;
@@ -270,6 +282,9 @@ export function useDashboard() {
   const deleteBucket = useCallback((metaIdx: number, bucketIdx: number) =>
     dispatch({ type: 'DELETE_BUCKET', metaIdx, bucketIdx }), []);
 
+  const toggleBucketDone = useCallback((metaIdx: number, bucketIdx: number, done: boolean) =>
+    dispatch({ type: 'TOGGLE_BUCKET_DONE', metaIdx, bucketIdx, done }), []);
+
   const addClient = useCallback((metaIdx: number, name: string) =>
     dispatch({ type: 'ADD_CLIENT', metaIdx, name }), []);
 
@@ -317,7 +332,7 @@ export function useDashboard() {
     state, dispatch,
     updateText, toggleOKR, editOKRText, addOKR, deleteOKR,
     addBook, deleteBook, updateFinanceFlow,
-    addBucket, updateBucket, updateBucketTarget, updateBucketName, deleteBucket,
+    addBucket, updateBucket, updateBucketTarget, updateBucketName, deleteBucket, toggleBucketDone,
     addClient, updateClientStatus, updateClientName,
     updateFunnel, toggleWeek, rateWeek, noteWeek, updateChartData,
     saveNotes, addInboxItem, deleteInboxItem, factoryReset,
